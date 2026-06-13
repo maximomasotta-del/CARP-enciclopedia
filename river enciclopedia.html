@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Enciclopedia CARP - El Más Grande</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rojo: #E30613;
+            --blanco: #FFFFFF;
+            --negro: #0A0A0A;
+            --gris-oscuro: #111111;
+            --gris-texto: #E5E5E5;
+            --oro: #D4AF37;
+            --borde: #2A2A2A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        body { background-color: var(--negro); color: var(--gris-texto); font-family: 'Inter', sans-serif; line-height: 1.6; padding-top: 60px; }
+
+        header { background: linear-gradient(180deg, #000 0%, var(--rojo) 100%); padding: 30px 15px; text-align: center; border-bottom: 4px solid var(--oro); }
+        header h1 { font-family: 'Oswald', sans-serif; font-size: 2.5rem; text-transform: uppercase; color: #fff; }
+        header p { color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; margin-top: 5px; }
+
+        .badge-autor { background: var(--gris-oscuro); color: var(--oro); text-align: center; padding: 8px; font-weight: 900; font-size: 0.8rem; border-bottom: 1px solid var(--borde); }
+        .marquesina-fija { background: var(--rojo); color: #fff; padding: 10px; font-weight: 800; font-size: 0.85rem; text-align: center; border-bottom: 2px solid #fff; text-transform: uppercase; }
+
+        /* MENÚ FLOTANTE TIPO ASCENSOR: NUNCA SE QUEDA TRABADO */
+        nav { background: #000; display: flex; overflow-x: auto; white-space: nowrap; border-bottom: 2px solid var(--rojo); position: fixed; top: 0; left: 0; width: 100%; z-index: 9999; -webkit-overflow-scrolling: touch; }
+        nav a { background: #000; color: #aaa; padding: 15px 20px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; text-decoration: none; display: inline-block; }
+        nav a:active { color: #fff; background: var(--rojo); }
+
+        main { padding: 15px; max-width: 800px; margin: 0 auto; }
+        
+        /* TODAS LAS SECCIONES QUEDAN DISPONIBLES EN CONTINUO */
+        .section { display: block; padding-top: 40px; margin-bottom: 40px; border-bottom: 1px dashed var(--borde); padding-bottom: 20px; }
+
+        h2 { font-family: 'Oswald', sans-serif; font-size: 1.8rem; color: #fff; margin-bottom: 15px; border-left: 6px solid var(--rojo); padding-left: 10px; text-transform: uppercase; }
+
+        .card { background: var(--gris-oscuro); border: 1px solid var(--borde); border-radius: 8px; padding: 20px; margin-bottom: 15px; }
+        .card h3 { color: var(--rojo); font-size: 1.3rem; margin-bottom: 10px; font-weight: 900; }
+        .card p { margin-bottom: 10px; font-size: 0.95rem; color: #ccc; }
+        
+        .era-detalle { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 6px; border: 1px solid #333; margin-top: 10px; font-size: 0.9rem; }
+        .era-detalle strong { color: var(--oro); display: block; margin-bottom: 2px; text-transform: uppercase; font-size: 0.8rem; }
+
+        .foto-placeholder { width: 100%; height: 90px; background: #1a1a1a; border-left: 4px solid var(--rojo); border-radius: 6px; margin: 12px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--oro); font-weight: 700; font-size: 0.9rem; text-align: center; }
+
+        .monumental-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .sector-card { background: #161616; padding: 15px; border-radius: 6px; border-top: 3px solid var(--rojo); }
+        .sector-card h4 { color: var(--oro); margin-bottom: 5px; text-transform: uppercase; font-size: 0.95rem; }
+
+        .table-res { overflow-x: auto; border-radius: 6px; border: 1px solid #333; }
+        table { width: 100%; border-collapse: collapse; background: #0a0a0a; }
+        th { background: var(--rojo); color: #fff; padding: 12px; text-align: left; text-transform: uppercase; font-size: 0.7rem; }
+        td { padding: 10px 12px; border-bottom: 1px solid #1a1a1a; font-size: 0.85rem; }
+        .btn-ano { background: #222; color: #fff; border: 1px solid #444; padding: 6px 10px; border-radius: 4px; margin: 3px; font-weight: 700; font-size: 0.8rem; display: inline-block; cursor: pointer; }
+
+        /* DISEÑO EXCLUSIVO PARA EL ALTAR DE ÍDOLOS */
+        .idolos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 15px; }
+        .btn-idolo { background: #161616; border: 1px solid var(--borde); border-radius: 6px; padding: 12px; color: #fff; text-align: center; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: 0.2s; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 80px; }
+        .btn-idolo:active { border-color: var(--rojo); background: #220507; }
+        .btn-idolo span { color: var(--oro); font-size: 0.7rem; font-weight: 900; margin-bottom: 4px; display: block; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-inner { background: var(--gris-oscuro); border: 2px solid var(--rojo); border-radius: 12px; max-width: 500px; width: 100%; padding: 20px; position: relative; }
+        .close-m { position: absolute; top: 10px; right: 15px; color: #fff; font-size: 1.8rem; cursor: pointer; font-weight: bold; }
+        .modal-item { margin-bottom: 10px; font-size: 0.95rem; }
+        .modal-item strong { color: var(--oro); display: block; font-size: 0.8rem; text-transform: uppercase; }
+
+        .tactics-nav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 15px; }
+        .t-select { background: #111; border: 1px solid #333; color: #fff; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 0.8rem; white-space: nowrap; }
+        .t-select.active { border-color: var(--rojo); background: #200; }
+
+        .soccer-field { background: #1b4d22; border: 3px solid #fff; height: 400px; position: relative; border-radius: 6px; overflow: hidden; width: 100%; max-width: 360px; margin: 0 auto; }
+        .mid-line { position: absolute; top: 50%; width: 100%; height: 2px; background: rgba(255,255,255,0.4); }
+        .mid-circle { position: absolute; top: 50%; left: 50%; width: 70px; height: 70px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); }
+        
+        .player { position: absolute; width: 45px; text-align: center; transform: translate(-50%, -50%); }
+        .p-shirt { width: 20px; height: 20px; background: #fff; border: 2px solid var(--rojo); border-radius: 50%; margin: 0 auto; }
+        .p-shirt.gk { background: #ffcc00; border-color: #000; }
+        .p-name { font-size: 0.55rem; font-weight: 700; color: #fff; background: #000; padding: 1px 3px; border-radius: 2px; margin-top: 2px; white-space: nowrap; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#sec-eras">Eras</a>
+        <a href="#sec-monumental">El Templo</a>
+        <a href="#sec-titulos">Vitrina 54</a>
+        <a href="#sec-idolos">Altar Ídolos</a>
+        <a href="#sec-lab">Laboratorio</a>
+    </nav>
+
+    
+
+    <header>
+        <h1>River Plate</h1>
+        <p>Enciclopedia Suprema CARP</p>
+    </header>
+
+    <div class="marquesina-fija">
+         El Más Grande Lejos - Deslizá libremente hacia abajo ⚪🔴⚪
+    </div>
+
+    <main>
+        <section id="sec-eras" class="section">
+            <h2>Eras de Gloria Absoluta</h2>
+            <div class="card">
+                <h3>1901-1938: Génesis y la Identidad "Millonaria"</h3>
+                <p>River nació entre los diques de La Boca pero su destino era la aristocracia del fútbol. Tras mudarse a Palermo y luego a Núñez, el club rompió el mercado en 1931 contratando a Bernabé Ferreyra por una cifra astronómica. Fue el nacimiento de un estilo: ganar, gustar y golear.</p>
+                <div class="foto-placeholder">📷 REGISTRO DE FUNDACIÓN</div>
+                <div class="era-detalle">
+                    <strong>Hito Clave:</strong> La inauguración del Monumental en 1938, el sueño de Antonio Vespucio Liberti que cambió la escala del deporte en Argentina.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>1941-1947: La Máquina (La Perfección Táctica)</h3>
+                <p>Muñoz, Moreno, Pedernera, Labruna y Loustau. No eran solo jugadores, eran un engranaje poético. Redefinieron el fútbol mundial con la "permuta": los delanteros bajaban a armar juego y los volantes llegaban al área. Fue el equipo que inspiró a la Naranja Mecánica de Cruyff décadas después.</p>
+                <div class="foto-placeholder">📷 LA MÁQUINA DE NÚÑEZ</div>
+                <div class="era-detalle">
+                    <strong>Dato Maestro:</strong> En esta era, River lograba que el rival ni siquiera tocara la pelota durante minutos, un "tiqui-taca" primitivo que humillaba con elegancia.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>1975-1981: El Despertar del Gigante</h3>
+                <p>Tras 18 años de sequía, Ángel Labruna volvió como DT para decir: "River es River". Ganó el Metro 75 y devolvió el orgullo. Fue la era de Fillol en el arco y la magia pura del Beto Alonso.</p>
+                <div class="foto-placeholder"> RETORNO CON LABRUNA</div>
+            </div>
+
+            <div class="card">
+                <h3>2014-2022: La Era Gallardo (La Eternidad)</h3>
+                <p>Marcelo Gallardo no solo ganó títulos; reconstruyó la psiquis del hincha. Su equipo era un camaleón táctico: podía presionar como perros de presa o jugar con la delicadeza de un cirujano. Eliminó a Boca en 5 cruces directos consecutivos, culminando en la final de finales en el Bernabéu.</p>
+                <div class="foto-placeholder"> MADRID 9 DE DICIEMBRE</div>
+                <div class="era-detalle">
+                    <strong>Filosofía:</strong> "Creer porque hay con qué". Una era de resiliencia donde River se volvió invencible en los mano a mano internacionales.
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-monumental" class="section">
+            <h2>Mâs Monumental: El Coliseo</h2>
+            <div class="card">
+                <p>Con capacidad para <strong>84.500 personas</strong>, es el estadio más grande de Sudamérica. La cercanía a la cancha (ahora a solo 12 metros) genera una presión única.</p>
+                <div class="foto-placeholder">🏟️ ARQUITECTURA MÂS MONUMENTAL</div>
+                
+                <div class="monumental-grid">
+                    <div class="sector-card">
+                        <h4>Tribuna Sívori</h4>
+                        <p>El corazón popular. Donde las banderas nunca bajan y el bombo marca el pulso del partido.</p>
+                    </div>
+                    <div class="sector-card">
+                        <h4>Tribuna San Martín</h4>
+                        <p>La elegancia y la historia. Donde se encuentran los palcos VIP y la salida de los equipos.</p>
+                    </div>
+                    <div class="sector-card">
+                        <h4>Tribuna Belgrano</h4>
+                        <p>La vista más espectacular. Desde aquí se aprecia el dibujo táctico y la inmensidad del campo híbrido.</p>
+                    </div>
+                    <div class="sector-card">
+                        <h4>Centenario</h4>
+                        <p>Un bastión de aliento constante que conecta con la historia rioplatense del club.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-titulos" class="section">
+            <h2>Vitrina de Gloria (54 Títulos Profesionales)</h2>
+            <p style="color:var(--oro); font-weight:600; margin-bottom:12px; font-size:0.85rem;">* Tocá cualquier año para desplegar la información técnica.</p>
+            <div class="table-res">
+                <table>
+                    <tr><th>Categoría</th><th>Años (Tocar para ver datos)</th></tr>
+                    <tr>
+                        <td style="color:var(--oro); font-weight:bold;">Ligas (37)</td>
+                        <td id="liga-btns"></td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--rojo); font-weight:bold;">Copas Nac. (7)</td>
+                        <td id="copa-btns"></td>
+                    </tr>
+                    <tr>
+                        <td style="color:#fff; font-weight:bold;">Inter. (10)</td>
+                        <td id="int-btns"></td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section id="sec-idolos" class="section">
+            <h2>Altar de Próceres Millonarios</h2>
+            <p style="color:var(--oro); font-weight:600; margin-bottom:12px; font-size:0.85rem;">* Tocá sobre cualquier leyenda para invocar sus estadísticas sagradas.</p>
+            
+            <div class="idolos-grid">
+                <button class="btn-idolo" onclick="verIdolo('labruna')"><span>PRÓCER 01</span>Ángel Labruna</button>
+                <button class="btn-idolo" onclick="verIdolo('amadeo')"><span>PRÓCER 02</span>Amadeo Carrizo</button>
+                <button class="btn-idolo" onclick="verIdolo('beto')"><span>PRÓCER 03</span>Beto Alonso</button>
+                <button class="btn-idolo" onclick="verIdolo('enzo')"><span>PRÓCER 04</span>Enzo Francescoli</button>
+                <button class="btn-idolo" onclick="verIdolo('ortega')"><span>PRÓCER 05</span>Ariel Ortega</button>
+                <button class="btn-idolo" onclick="verIdolo('gallardo')"><span>PRÓCER 06</span>M. Gallardo</button>
+                <button class="btn-idolo" onclick="verIdolo('ramon')"><span>PRÓCER 07</span>Ramón Díaz</button>
+                <button class="btn-idolo" onclick="verIdolo('ponzio')"><span>PRÓCER 08</span>Leo Ponzio</button>
+                <button class="btn-idolo" onclick="verIdolo('bernabe')"><span>PRÓCER 09</span>B. Ferreyra</button>
+            </div>
+        </section>
+
+        <section id="sec-lab" class="section">
+            <h2>Laboratorio Táctico</h2>
+            <div class="tactics-nav">
+                <button class="t-select active" data-tac="maquina">La Máquina (40s)</button>
+                <button class="t-select" data-tac="veira">El Equipo del 86</button>
+                <button class="t-select" data-tac="gallardo">River de Madrid</button>
+            </div>
+            <div class="soccer-field" id="field">
+                <div class="mid-line"></div>
+                <div class="mid-circle"></div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal" id="modal">
+        <div class="modal-inner">
+            <span class="close-m" onclick="document.getElementById('modal').style.display='none'">×</span>
+            <h2 id="m-title" style="border:none; margin-bottom:15px; font-size:1.3rem; color:#fff;">Título</h2>
+            <div id="m-body"></div>
+        </div>
+    </div>
+
+    <script>
+        // BASE DE DATOS DE LOS ÍDOLOS INTERACTIVOS
+        const databaseIdolos = {
+            "labruna": { n: "Ángel Labruna", d: "El jugador-emblema de la historia de River. Máximo goleador de los Superclásicos con 16 gritos oficiales.", p: "515 Partidos", g: "317 Goles", t: "16 Títulos (9 Jugador / 7 DT)", s: "Fe absoluta. Labruna no caminaba por la Bombonera, entraba tapándose la nariz, marcando la mística eterna." },
+            "amadeo": { n: "Amadeo Carrizo", d: "El inventor de la portería moderna. Primer arquero en usar guantes, salir del área jugando y usar los pies de líbero.", p: "520 Partidos", g: "0 Goles", t: "10 Títulos Oficiales", s: "Vanguardia pura. Desquiciaba a los delanteros rivales gambeteándolos en el área chica." },
+            "beto": { n: "Norberto Alonso", d: "La zurda más fina, arrogante y elegante que pisó Núñez. Símbolo del fútbol champagne.", p: "420 Partidos", g: "158 Goles", t: "9 Títulos", s: "Militancia millonaria. Hizo los dos goles con la mítica pelota naranja en la Bombonera y dio la vuelta olímpica ahí." },
+            "enzo": { n: "Enzo Francescoli", d: "El 'Príncipe'. Capitán e ídolo uruguayo que encandiló al mundo entero por su elegancia flotando sobre el pasto.", p: "237 Partidos", g: "137 Goles", t: "7 Títulos (Libertadores 96)", s: "Estilo señorial. Inspiró a Zinedine Zidane a bautizar a su hijo Enzo en su honor." },
+            "ortega": { n: "Ariel Ortega", d: "El 'Burrito'. La esencia pura del potrero argentino. Frenaba, enganchaba y quebraba cinturas como nadie.", p: "359 Partidos", g: "80 Goles", t: "7 Títulos Oficiales", s: "La vaselina infalible. Su sello maestro era acariciar la pelota por encima de arqueros gigantes." },
+            "gallardo": { n: "Marcelo Gallardo", d: "El estratega moderno que reconfiguró la historia internacional del club de punta a punta.", p: "305 (Jugador) / 8 Años (DT)", g: "70 Goles", t: "22 Títulos (8 Jugador / 14 DT)", s: "Guardia Alta. Armó equipos camaleónicos e imbatibles en los mano a mano coperos." },
+            "ramon": { n: "Ramón Díaz", d: "Pícaro, astuto y ganador serial. Condujo los destinos de la máquina demoledora de los años noventa.", p: "202 (Jugador)", g: "95 Goles", t: "14 Títulos (5 Jugador / 9 DT)", s: "Chicana táctica. Destrozaba rivales en la conferencia de prensa antes de jugar los domingos." },
+            "ponzio": { n: "Leonardo Ponzio", d: "El León de Armstrong. El alma, capitán y bandera del ciclo más glorioso del club.", p: "358 Partidos", g: "10 Goles", t: "17 Títulos (Jugador más ganador de la historia)", s: "Corazón indomable. Jugaba los partidos decisivos al límite de la resistencia física." },
+            "bernabe": { n: "Bernabé Ferreyra", d: "La primera megaestrella mundial del fútbol profesional. Su potencia obligó a reforzar las redes de los arcos.", p: "185 Partidos", g: "187 Goles (Promedio mayor a 1)", t: "4 Títulos", s: "El Mortero de Rufino. Sus remates eran tan potentes que dejaban a los arqueros desmayados." }
+        };
+
+        function verIdolo(key) {
+            const i = databaseIdolos[key];
+            if(i) {
+                document.getElementById('m-title').innerText = i.n;
+                document.getElementById('m-body').innerHTML = `
+                    <p style="font-size:0.95rem; color:#ccc; margin-bottom:12px; font-style:italic;">"${i.d}"</p>
+                    <div class="modal-item"><strong>Partidos oficiales:</strong> ${i.p}</div>
+                    <div class="modal-item"><strong>Goles marcados:</strong> ${i.g}</div>
+                    <div class="modal-item"><strong>Palmarés en River:</strong> ${i.t}</div>
+                    <div class="modal-item" style="border-top:1px solid #333; padding-top:10px; margin-top:10px;"><strong style="color:var(--rojo);">Superpoder Histórico:</strong> ${i.s}</div>
+                `;
+                document.getElementById('modal').style.display = 'flex';
+            }
+        }
+
+        const masterPalmares = {
+            "1932": { t: "Campeonato 1932", dt: "Víctor Caamaño", fig: "Bernabé Ferreyra", h: "Primer título profesional de la historia derrotando a Independiente." },
+            "1936": { t: "Copa Campeonato 1936", dt: "Emérico Hirschl", fig: "José María Minella", h: "Consagración del primer DT extranjero campeón de la historia." },
+            "1937": { t: "Campeonato 1937", dt: "Emérico Hirschl", fig: "Bernabé Ferreyra / Peucelle", h: "Bicampeonato arrollador convirtiendo 106 goles." },
+            "1941": { t: "Campeonato 1941", dt: "Renato Cesarini", fig: "Adolfo Pedernera", h: "Nace 'La Máquina' goleando 5-1 a Boca Juniors." },
+            "1942": { t: "Campeonato 1942", dt: "Renato Cesarini", fig: "José Manuel Moreno", h: "Mítica vuelta olímpica en la Bombonera empatando 2-2." },
+            "1945": { t: "Campeonato 1945", dt: "Carlos Peucelle", fig: "Ángel Labruna", h: "Labruna se corona máximo goleador con 25 gritos sagrados." },
+            "1947": { t: "Campeonato 1947", dt: "José María Minella", fig: "Alfredo Di Stéfano", h: "La irrupción letal de la 'Saeta Rubia' marcando 27 goles." },
+            "1952": { t: "Campeonato 1952", dt: "José María Minella", fig: "Amadeo Carrizo / Labruna", h: "Inicio de una década dorada con solidez defensiva total." },
+            "1953": { t: "Campeonato 1953", dt: "José María Minella", fig: "Walter Gómez", h: "Bicampeonato impecable destacando al uruguayo Walter Gómez." },
+            "1955": { t: "Campeonato 1955", dt: "José María Minella", fig: "Ángel Labruna", h: "Vuelta olímpica en cancha de Boca tras ganar el Superclásico 2-1." },
+            "1956": { t: "Campeonato 1956", dt: "José María Minella", fig: "Enrique Omar Sívori", h: "Fútbol espectacular que le valió a Sívori el pase a Europa." },
+            "1957": { t: "Campeonato 1957", dt: "José María Minella", fig: "Roberto Zárate", h: "Histórico Tricampeonato de los años 50 marcando supremacy." },
+            "1975m": { t: "Torneo Metropolitano 1975", dt: "Ángel Labruna", fig: "Norberto Alonso", h: "Se corta la terrible sequía de 18 años ante una multitud." },
+            "1975n": { t: "Torneo Nacional 1975", dt: "Ángel Labruna", fig: "Leopoldo Luque", h: "Doble corona local para confirmar el despertar del Gigante." },
+            "1977": { t: "Torneo Metropolitano 1977", dt: "Ángel Labruna", fig: "Ubaldo Fillol", h: "Campaña maratónica de 44 fechas sellada con triunfo ante Boca." },
+            "1979m": { t: "Torneo Metropolitano 1979", dt: "Ángel Labruna", fig: "Ramón Díaz", h: "Ofensiva demoledora aplastando a Vélez en las finales por global de 7-1." },
+            "1979n": { t: "Torneo Nacional 1979", dt: "Ángel Labruna", fig: "Norberto Alonso", h: "Bicampeonato ganando al duro Unión de Santa Fe." },
+            "1980": { t: "Torneo Metropolitano 1980", dt: "Ángel Labruna", fig: "Ramón Díaz", h: "Segundo Tricampeonato de la historia bajo el mando de Labruna." },
+            "1981": { t: "Torneo Nacional 1981", dt: "Alfredo Di Stéfano", fig: "Américo Gallego / Kempes", h: "Kempes anota el gol definitivo de cabeza en la final contra Ferro." },
+            "1986": { t: "Campeonato 1985/86", dt: "Héctor Veira", fig: "Norberto Alonso", h: "Vuelta olímpica con la mítica pelota naranja en la Bombonera." },
+            "1990": { t: "Campeonato 1989/90", dt: "Daniel Passarella", fig: "Enrique Corti", h: "Primer título de los 90 consolidando juveniles del semillero." },
+            "1991": { t: "Torneo Apertura 1991", dt: "Daniel Passarella", fig: "Ramón Díaz", h: "Regreso triunfal del Pelado Díaz anotando 14 goles." },
+            "1993": { t: "Torneo Apertura 1993", dt: "Daniel Passarella", fig: "Ariel Ortega", h: "Consolidación del Burrito Ortega desquiciando defensas del país." },
+            "1994": { t: "Torneo Apertura 1994", dt: "Américo Gallego", fig: "Enzo Francescoli", h: "Único campeonato invicto de la historia, cerrando 3-0 en la Bombonera." },
+            "1996": { t: "Torneo Apertura 1996", dt: "Ramón Díaz", fig: "Marcelo Salas", h: "El inicio de otro espectacular Tricampeonato consecutivo." },
+            "1997c": { t: "Torneo Clausura 1997", dt: "Ramón Díaz", fig: "Enzo Francescoli", h: "Fútbol champagne de alto nivel liquidando el torneo fechas antes." },
+            "1997a": { t: "Torneo Apertura 1997", dt: "Ramón Díaz", fig: "Ariel Ortega / Gallardo", h: "Histórico Tricampeonato sellado tras empatar con Argentinos Juniors." },
+            "1999": { t: "Torneo Apertura 1999", dt: "Ramón Díaz", fig: "Javier Saviola / Pablo Aimar", h: "Explosión letal de 'Los Cuatro Fantásticos' en ataque." },
+            "2000": { t: "Torneo Clausura 2000", dt: "Américo Gallego", fig: "Juan Pablo Ángel", h: "Bicampeonato indiscutido sentenciado con triunfo ante San Lorenzo." },
+            "2002": { t: "Torneo Clausura 2002", dt: "Ramón Díaz", fig: "Fernando Cavenaghi", h: "Cavenaghi irrumpe como goleador implacable con solo 18 años." },
+            "2003": { t: "Torneo Clausura 2003", dt: "Manuel Pellegrini", fig: "Andrés D'Alessandro", h: "Gran campaña táctica de la mano del Ingeniero Pellegrini." },
+            "2004": { t: "Torneo Clausura 2004", dt: "Leonardo Astrada", fig: "Marcelo Gallardo", h: "Gallardo lidera en la cancha como capitán otra estrella local." },
+            "2008": { t: "Torneo Clausura 2008", dt: "Diego Simeone", fig: "Diego Buonanotte", h: "Campañón de Buonanotte y Alexis Sánchez rompiendo defensas." },
+            "2014": { t: "Torneo Final 2014", dt: "Ramón Díaz", fig: "Manuel Lanzini", h: "La última obra del Pelado Díaz goleando 5-0 a Quilmes." },
+            "2021": { t: "Liga Profesional 2021", dt: "Marcelo Gallardo", fig: "Julián Álvarez", h: "Goleada épica a Racing y explosión letal de la Araña Julián." },
+            "2023": { t: "Liga Profesional 2023", dt: "Martín Demichelis", fig: "Esequiel Barco", h: "Supremacía total jugando un fútbol de alta velocidad local." },
+
+            "2014c": { t: "Copa Campeonato 2014", dt: "Marcelo Gallardo", fig: "Germán Pezzella", h: "Primer partido oficial de Gallardo. Triunfo 1-0 a San Lorenzo." },
+            "2016a": { t: "Copa Argentina 2016", dt: "Marcelo Gallardo", fig: "Lucas Alario", h: "Final inolvidable ganada 4-3 contra Rosario Central con hat-trick de Alario." },
+            "2017a": { t: "Copa Argentina 2017", dt: "Marcelo Gallardo", fig: "Ignacio Scocco", h: "Bicampeonato de Copa Argentina ganando a Atlético Tucumán." },
+            "2018s": { t: "Supercopa Argentina 2017", dt: "Marcelo Gallardo", fig: "Pity Martínez / Armani", h: "Final mano a mano ganada directamente a Boca por 2-0 en Mendoza." },
+            "2019a": { t: "Copa Argentina 2019", dt: "Marcelo Gallardo", fig: "Nacho Fernández", h: "Goleada contundente 3-0 a Central Córdoba de Santiago." },
+            "2021s": { t: "Supercopa Argentina 2019", dt: "Marcelo Gallardo", fig: "Nicolás De La Cruz", h: "Paliza táctica memorable por 5-0 a Racing Club." },
+            "2021t": { t: "Trofeo de Campeones 2021", dt: "Marcelo Gallardo", fig: "La araña, Julián Álvarez", h: "Goleada rotunda por 4-0 a Colón de Santa Fe." },
+
+            "1986l": { t: "Copa Libertadores 1986", dt: "Héctor Veira", fig: "Juan Gilberto Funes", h: "El Búfalo Funes anota el gol definitivo ante América de Cali." },
+            "1986i": { t: "Copa Intercontinental 1986", dt: "Héctor Veira", fig: "Antonio Alzamendi", h: "La gloria en Tokio venciendo 1-0 al Steaua de Bucarest rumano." },
+            "1996l": { t: "Copa Libertadores 1996", dt: "Ramón Díaz", fig: "Hernán Crespo", h: "Segunda Libertadores. Crespo firma un doblete inolvidable." },
+            "1997s": { t: "Supercopa 1997", dt: "Ramón Díaz", fig: "Marcelo Salas", h: "Conquista continental ganando al São Paulo con dos goles del Matador." },
+            "2014s": { t: "Copa Sudamericana 2014", dt: "Marcelo Gallardo", fig: "Leonardo Pisculichi", h: "Campeones invictos eliminando a Boca en semifinal histórica." },
+            "2015r": { t: "Recopa Sudamericana 2015", dt: "Marcelo Gallardo", fig: "Carlos Sánchez", h: "Victoria de ida y vuelta superando a San Lorenzo de Almagro por 1-0." },
+            "2015l": { t: "Copa Libertadores 2015", dt: "Marcelo Gallardo", fig: "Lucas Alario", h: "Tercera Libertadores ganada bajo lluvia torrencial por 3-0 a Tigres." },
+            "2015b": { t: "Copa Suruga Bank 2015", dt: "Marcelo Gallardo", fig: "Gonzalo Martínez", h: "Goleada 3-0 al Gamba Osaka en Japón para sumar estrella." },
+            "2016r": { t: "Recopa Sudamericana 2016", dt: "Marcelo Gallardo", fig: "Lucas Alario", h: "Bicampeonato de Recopa derrotando a Santa Fe de Colombia." },
+            "2018l": { t: "Copa Libertadores 2018", dt: "Marcelo Gallardo", fig: "Juanfer Quintero / Pity Martínez", h: "La Final Eterna. River derrota a Boca 3-1 en Madrid." }
+        };
+
+        const ligas = ["1932", "1936", "1937", "1941", "1942", "1945", "1947", "1952", "1953", "1955", "1956", "1957", "1975M", "1975N", "1977", "1979M", "1979N", "1980", "1981", "1986", "1990", "1991", "1993", "1994", "1996", "1997C", "1997A", "1999", "2000", "2002", "2003", "2004", "2008", "2014", "2021", "2023"];
+        const copas = ["2014C", "2016A", "2017A", "2018S", "2019A", "2021S", "2021T"];
+        const ints = ["1986L", "1986I", "1996L", "1997S", "2014S", "2015R", "2015L", "2015B", "2016R", "2018L"];
+
+        function genButtons(arr, targetId) {
+            const container = document.getElementById(targetId);
+            arr.forEach(y => {
+                let btn = document.createElement('button');
+                btn.className = 'btn-ano';
+                btn.innerText = y;
+                btn.onclick = function() {
+                    const key = y.toLowerCase();
+                    const d = masterPalmares[key];
+                    if(d) {
+                        document.getElementById('m-title').innerText = d.t;
+                        document.getElementById('m-body').innerHTML = `
+                            <div class="modal-item"><strong>DT:</strong> ${d.dt}</div>
+                            <div class="modal-item"><strong>Figura:</strong> ${d.fig}</div>
+                            <div class="modal-item"><strong>Hito:</strong> ${d.h}</div>
+                        `;
+                        document.getElementById('modal').style.display = 'flex';
+                    }
+                };
+                container.appendChild(btn);
+            });
+        }
+        genButtons(ligas, 'liga-btns'); genButtons(copas, 'copa-btns'); genButtons(ints, 'int-btns');
+
+        const tacs = {
+            "maquina": [
+                { n: "Barrios", x: 50, y: 92, g: 1 }, { n: "Vaghi", x: 35, y: 80 }, { n: "Ferreyra", x: 65, y: 80 },
+                { n: "Yácono", x: 20, y: 60 }, { n: "Rodolfi", x: 50, y: 65 }, { n: "Ramos", x: 80, y: 60 },
+                { n: "Muñoz", x: 15, y: 35 }, { n: "Moreno", x: 35, y: 44 }, { n: "Pedernera", x: 50, y: 48 }, { n: "Labruna", x: 65, y: 44 }, { n: "Loustau", x: 85, y: 35 }
+            ],
+            "veira": [
+                { n: "Pumpido", x: 50, y: 92, g: 1 }, { n: "Gordillo", x: 20, y: 75 }, { n: "Ruggeri", x: 42, y: 78 }, { n: "Gutiérrez", x: 58, y: 78 }, { n: "Montenegro", x: 80, y: 75 },
+                { n: "Gallego", x: 50, y: 60 }, { n: "H. Enrique", x: 30, y: 55 }, { n: "Alfaro", x: 70, y: 55 },
+                { n: "Alonso", x: 50, y: 38 }, { n: "Alzamendi", x: 30, y: 22 }, { n: "Funes", x: 70, y: 22 }
+            ],
+            "gallardo": [
+                { n: "Armani", x: 50, y: 92, g: 1 }, { n: "Montiel", x: 15, y: 42 }, { n: "Maidana", x: 42, y: 75 }, { n: "Pinola", x: 58, y: 75 }, { n: "Casco", x: 85, y: 42 },
+                { n: "Ponzio", x: 50, y: 62 }, { n: "Enzo Pérez", x: 35, y: 52 }, { n: "Palacios", x: 65, y: 52 },
+                { n: "Nacho F.", x: 50, y: 34 }, { n: "Pity M.", x: 32, y: 20 }, { n: "Pratto", x: 68, y: 20 }
+            ]
+        };
+
+        document.querySelectorAll('.t-select').forEach(btn => {
+            btn.onclick = function() {
+                const type = btn.getAttribute('data-tac');
+                const field = document.getElementById('field');
+                field.innerHTML = '<div class="mid-line"></div><div class="mid-circle"></div>';
+                
+                tacs[type].forEach(p => {
+                    let div = document.createElement('div');
+                    div.className = 'player';
+                    div.style.left = p.x + '%';
+                    div.style.top = p.y + '%';
+                    div.innerHTML = `<div class="p-shirt ${p.g ? 'gk' : ''}"></div><div class="p-name">${p.n}</div>`;
+                    field.appendChild(div);
+                });
+                document.querySelectorAll('.t-select').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            };
+        });
+
+        window.onload = function() {
+            document.querySelector('.t-select').click();
+        };
+    </script>
+</body>
+</html>
